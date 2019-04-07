@@ -1,7 +1,9 @@
 package com.company;
+import java.util.Stack;
+
+
 /*Queue via Stacks: Implement a MyQueue class which implements a queue using two stacks. */
 
-import java.util.Stack;
 
 public class QueueUsingStack {
     Stack<Integer> s1 = new Stack();
@@ -16,37 +18,42 @@ public class QueueUsingStack {
     }
 
     public void enQueue(int data) {
-
-        while (!s1.isEmpty()) {
-            s2.push(s1.pop());
-        }
         s1.push(data);
-        while (!s2.isEmpty()) {
-            s1.push(s2.pop());
-        }
-
     }
 
     public int deQueue() {
 
+        int data = 0;
+
         if (s1.isEmpty()) {
             System.out.println("Queue is Empty");
-            System.exit(0);
+            return data;
         }
-        int data = s1.peek();
-        s1.pop();
+        while (!s1.isEmpty()) {
+            shiftElement(s1, s2);
+            data = s2.pop();
+        }
+        while (!s2.isEmpty()) {
+            shiftElement(s2, s1);
+        }
         return data;
+
+    }
+
+    void shiftElement(Stack<Integer> a, Stack<Integer> b) {
+        while (!a.isEmpty()) {
+            b.push(a.pop());
+        }
     }
 
     public static void main(String[] args) {
+
         QueueUsingStack q = new QueueUsingStack();
-        System.out.println(q.deQueue());
-        q.enQueue(1);
+        q.enQueue(100);
         q.enQueue(2);
         q.enQueue(3);
 
         System.out.println(q.deQueue());
-        System.out.println(q.deQueue());
-        System.out.println(q.deQueue());
+
     }
 }

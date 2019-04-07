@@ -12,38 +12,37 @@ and dequeueCat. You may use the built-in LinkedList data structure. */
 
 
 public class Animal {
-    String name;
-    int order;
 
-    Animal(String n) {
-        name = n;
+    public static enum Type {
+        Dog,
+        Cat
     }
 
-    public int getOrder() {
-        return order;
-    }
+    private final int order;
 
-    public void setOrder(int order) {
+    Animal(int order) {
         this.order = order;
     }
 
-
     boolean olderThan(Animal a) {
-        return this.getOrder() < a.getOrder();
-
+        return this.order < a.order;
     }
 
+    @Override
+    public String toString() {
+        return this.getClass().getCanonicalName() + " - " + order;
+    }
 }
 
 class Dog extends Animal {
-    Dog(String name) {
-        super(name);
+    Dog(int order) {
+        super(order);
     }
 }
 
 class Cat extends Animal {
-    Cat(String name) {
-        super(name);
+    Cat(int order) {
+        super(order);
     }
 }
 
@@ -52,22 +51,15 @@ class QueueAnimal {
     Queue<Cat> cat = new LinkedList<>();
     int order = 0;
 
-    void enQueue(Animal animal) {
-
-        animal.setOrder(order);
-        order++;
-
-        if (animal instanceof Dog) {
-            dog.add((Dog) animal);
-
-        } else if (animal instanceof Cat) {
-            cat.add((Cat) animal);
+    void enQueue(Animal.Type type) {
+        if (type == Animal.Type.Dog) {
+            dog.add(new Dog(++order));
+        } else {
+            cat.add(new Cat(++order));
         }
-
     }
 
     Animal dequeueAny() {
-
         if (dog.peek().olderThan(cat.peek())) {
             return dequeueDog();
         }
@@ -84,26 +76,17 @@ class QueueAnimal {
 
     public static void main(String[] args) {
 
-        Dog dog1 = new Dog("Mini");
-        Dog dog2 = new Dog("Rini");
-        Dog dog3 = new Dog("Lini");
-
-        Cat cat1 = new Cat("Ale");
-        Cat cat2 = new Cat("Kyle");
-
         QueueAnimal qa = new QueueAnimal();
 
-        qa.enQueue(dog1);
-        qa.enQueue(dog2);
-        qa.enQueue(dog3);
-        qa.enQueue(cat1);
-        qa.enQueue(cat2);
+        qa.enQueue(Animal.Type.Dog);
+        qa.enQueue(Animal.Type.Dog);
+        qa.enQueue(Animal.Type.Cat);
+        qa.enQueue(Animal.Type.Dog);
+        qa.enQueue(Animal.Type.Cat);
 
-        System.out.println(qa.dequeueDog().name);
-        System.out.println(qa.dequeueCat().name);
-        System.out.println(qa.dequeueAny().name);
-
-
+        System.out.println(qa.dequeueDog());
+        System.out.println(qa.dequeueCat());
+        System.out.println(qa.dequeueAny());
     }
 
 
