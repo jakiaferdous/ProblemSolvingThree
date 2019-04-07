@@ -23,19 +23,16 @@ public class QueueUsingStack {
 
     public int deQueue() {
 
-        int data = 0;
+        int data = -1;
 
         if (s1.isEmpty()) {
             System.out.println("Queue is Empty");
             return data;
         }
-        while (!s1.isEmpty()) {
-            shiftElement(s1, s2);
-            data = s2.pop();
-        }
-        while (!s2.isEmpty()) {
-            shiftElement(s2, s1);
-        }
+        shiftElement(s1, s2);
+        data = s2.pop();
+        shiftElement(s2, s1);
+
         return data;
 
     }
